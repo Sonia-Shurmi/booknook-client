@@ -8,13 +8,13 @@ import {
 const benefits = [
   {
     icon: LibraryBig,
-    title: "A Growing Collection",
+    title: "A Growing Books Collection",
     description:
       "Discover books across different genres, from timeless classics to exciting new reads. There is always something new to explore.",
   },
   {
     icon: Clock3,
-    title: "Borrow with Ease",
+    title: "Borrow with Super Ease",
     description:
       "Find an available book, borrow it in just a few steps, and keep track of your reading with your personal library.",
   },
