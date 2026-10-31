@@ -1,6 +1,6 @@
 
 import type { Metadata } from "next";
-import Link from "next/link";
+import BooksCatalog from "@/components/books/BooksCatalog";
 
 export const metadata: Metadata = {
   title: "All Books",
@@ -57,67 +57,7 @@ export default async function BooksPage() {
           </p>
         </div>
 
-        {books.length === 0 ? (
-          <div className="rounded-2xl border border-[#E8DED2] bg-white px-6 py-16 text-center">
-            <h2 className="mb-2 font-[family-name:var(--font-lora)] text-2xl font-semibold text-[#292421]">
-              No Books Found
-            </h2>
-            <p className="text-[#77716B]">
-              There are no books available in the collection yet.
-            </p>
-          </div>
-        ) : (
-          <>
-            <p className="mb-6 text-sm text-[#77716B]">
-              Showing {books.length} books
-            </p>
-
-            <div className="grid grid-cols-1 gap-7 sm:grid-cols-2 lg:grid-cols-3">
-              {books.map((book) => (
-                <article
-                  key={book._id}
-                  className="overflow-hidden rounded-2xl border border-[#E8DED2] bg-white transition-all duration-300 hover:-translate-y-1 hover:shadow-lg"
-                >
-                  <div className="aspect-[5/4] overflow-hidden bg-[#F0EAE1]">
-                    <img
-                      src={book.image}
-                      alt={book.title}
-                      className="h-full w-full object-cover transition-transform duration-500 hover:scale-105"
-                    />
-                  </div>
-
-                  <div className="p-6">
-                    <span className="inline-block rounded-full bg-[#F5E9E4] px-3 py-1 text-xs font-semibold text-[#B85C45]">
-                      {book.category}
-                    </span>
-
-                    <h2 className="mt-4 line-clamp-1 font-[family-name:var(--font-lora)] text-xl font-semibold text-[#292421]">
-                      {book.title}
-                    </h2>
-
-                    <p className="mt-2 text-sm text-[#77716B]">
-                      By {book.author}
-                    </p>
-
-                    <p className="mt-4 text-sm text-[#77716B]">
-                      Available copies:{" "}
-                      <span className="font-semibold text-[#292421]">
-                        {book.availableCopies}
-                      </span>
-                    </p>
-
-                    <Link
-                      href={`/books/${book._id}`}
-                      className="mt-6 inline-flex w-full items-center justify-center rounded-lg bg-[#B85C45] px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-[#984936]"
-                    >
-                      View Details
-                    </Link>
-                  </div>
-                </article>
-              ))}
-            </div>
-          </>
-        )}
+        <BooksCatalog books={books} />
       </div>
     </section>
   );
