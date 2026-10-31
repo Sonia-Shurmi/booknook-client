@@ -1,0 +1,81 @@
+
+"use client";
+
+import { BookOpen, X } from "lucide-react";
+
+interface ReturnConfirmModalProps {
+  bookTitle: string;
+  onConfirm: () => void;
+  onClose: () => void;
+  loading: boolean;
+}
+
+export default function ReturnConfirmModal({
+  bookTitle,
+  onConfirm,
+  onClose,
+  loading,
+}: ReturnConfirmModalProps) {
+  return (
+    <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/50 px-4 py-6 backdrop-blur-sm">
+      <div className="w-full max-w-md rounded-2xl bg-white p-6 shadow-2xl sm:p-8">
+        <div className="mb-6 flex items-start justify-between">
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#B85C45]">
+              BookNook Library
+            </p>
+
+            <h2 className="mt-2 font-[family-name:var(--font-lora)] text-2xl font-bold text-[#292421]">
+              Return This Book?
+            </h2>
+          </div>
+
+          <button
+            onClick={onClose}
+            disabled={loading}
+            aria-label="Close modal"
+            className="rounded-full p-2 text-[#77716B] transition hover:bg-[#F5E9E4] hover:text-[#B85C45] disabled:opacity-50"
+          >
+            <X size={20} />
+          </button>
+        </div>
+
+        <div className="mb-6 flex items-center gap-3 rounded-xl bg-[#FAF7F2] p-4">
+          <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-[#F5E9E4] text-[#B85C45]">
+            <BookOpen size={21} />
+          </div>
+
+          <div>
+            <p className="text-xs text-[#77716B]">Selected Book</p>
+            <p className="font-semibold text-[#292421]">
+              {bookTitle}
+            </p>
+          </div>
+        </div>
+
+        <p className="mb-6 text-sm leading-7 text-[#77716B]">
+          Are you sure you want to return this book? It will be removed from
+          your active borrowed books.
+        </p>
+
+        <div className="flex flex-col-reverse gap-3 sm:flex-row">
+          <button
+            onClick={onClose}
+            disabled={loading}
+            className="h-12 flex-1 rounded-xl border border-[#E8DED2] text-sm font-semibold text-[#77716B] transition hover:bg-[#FAF7F2] disabled:opacity-50"
+          >
+            Keep Book
+          </button>
+
+          <button
+            onClick={onConfirm}
+            disabled={loading}
+            className="h-12 flex-1 rounded-xl bg-[#B85C45] text-sm font-semibold text-white transition hover:bg-[#984936] disabled:cursor-not-allowed disabled:opacity-50"
+          >
+            {loading ? "Processing..." : "Confirm Return"}
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
