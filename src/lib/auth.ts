@@ -3,7 +3,8 @@ import { mongodbAdapter } from "@better-auth/mongo-adapter";
 import { jwt } from "better-auth/plugins";
 import client from "./mongodb";
 
-export const auth = betterAuth({
+export const auth = betterAuth({  
+  baseURL: process.env.BETTER_AUTH_URL,
   database: mongodbAdapter(client.db("booknookDB"), {
     client,
   }),
