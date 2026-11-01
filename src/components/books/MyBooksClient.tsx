@@ -8,6 +8,7 @@ import { authClient } from "@/lib/auth-client";
 import { apiRequest } from "@/lib/api";
 import EditBookModal from "@/components/books/EditBookModal";
 import DeleteBookModal from "@/components/books/DeleteBookModal";
+import { useRouter } from "next/dist/client/components/navigation";
 
 interface Book {
   _id: string;
@@ -31,18 +32,19 @@ export default function MyBooksClient() {
   const [selectedBook, setSelectedBook] = useState<Book | null>(null);
   const [deletingBook, setDeletingBook] = useState<Book | null>(null);
   const [deleting, setDeleting] = useState(false);
+  const router = useRouter();
 
   const userEmail = session?.user?.email?.toLowerCase();
+  useEffect(() => {
+  if (!isPending && !userEmail) {
+    router.replace("/login?callbackUrl=%2Fmy-books");
+  }
+  }, [isPending, userEmail, router]);
 
   useEffect(() => {
-    if (isPending) return;
+  if (isPending || !userEmail) return;
 
-    if (!userEmail) {
-      setLoading(false);
-      return;
-    }
-
-    const fetchBooks = async () => {
+  const fetchBooks = async () => {
       try {
         setError("");
 
