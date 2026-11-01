@@ -1,7 +1,7 @@
 
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { authClient } from "@/lib/auth-client";
@@ -32,6 +32,11 @@ export default function AddBookForm() {
   const [submitting, setSubmitting] = useState(false);
 
   const user = session?.user;
+  useEffect(() => {
+  if (!isPending && !user) {
+    router.replace("/login?callbackUrl=%2Fadd-book");
+  }
+}, [isPending, user, router]);
 
   const handleChange = (
     e: React.ChangeEvent<
@@ -109,20 +114,13 @@ export default function AddBookForm() {
           <div className="rounded-2xl bg-white p-10 text-center text-[#77716B]">
             Loading your account...
           </div>
-        ) : !user ? (
-          <div className="rounded-2xl border border-[#E8DED2] bg-white p-8 text-center">
-            <p className="text-[#77716B]">
-              Please log in to add a book to BookNook.
-            </p>
-
-            <button
-              onClick={() => router.push("/login")}
-              className="mt-5 rounded-xl bg-[#B85C45] px-6 py-3 font-semibold text-white hover:bg-[#984936]"
-            >
-              Go to Login
-            </button>
-          </div>
-        ) : (
+          ) : !user ? (
+            <div className="rounded-2xl bg-white p-10 text-center">
+              <p className="text-[#77716B]">
+                Redirecting to login...
+              </p>
+            </div>
+          ) : (
           <form
             onSubmit={handleSubmit}
             className="space-y-7 rounded-2xl border border-[#E8DED2] bg-white p-6 shadow-sm sm:p-9"

@@ -1,13 +1,21 @@
 
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import { Camera, UserRound, Mail } from "lucide-react";
 import { toast } from "sonner";
 import { authClient } from "@/lib/auth-client";
 
 export default function ProfileClient() {
   const { data: session, isPending } = authClient.useSession();
+  
+  const router = useRouter();
+  useEffect(() => {
+    if (!isPending && !session?.user) {
+      router.replace("/login?callbackUrl=%2Fprofile");
+    }
+  }, [isPending, session, router]);
 
   const user = session?.user;
 
@@ -23,26 +31,13 @@ export default function ProfileClient() {
     );
   }
 
-  if (!user) {
-    return (
-      <section className="flex min-h-screen items-center justify-center bg-[#FAF7F2] px-5">
-        <div className="rounded-2xl bg-white p-10 text-center shadow-sm">
-          <h1 className="font-[family-name:var(--font-lora)] text-2xl font-bold text-[#292421]">
-            Login Required
-          </h1>
-          <p className="mt-3 text-[#77716B]">
-            Please log in to view your profile.
-          </p>
-          <a
-            href="/login?callbackUrl=%2Fprofile"
-            className="mt-6 inline-block rounded-xl bg-[#B85C45] px-6 py-3 font-semibold text-white hover:bg-[#984936]"
-          >
-            Go to Login
-          </a>
-        </div>
-      </section>
-    );
-  }
+ if (!user) {
+  return (
+    <section className="flex min-h-screen items-center justify-center bg-[#FAF7F2]">
+      <p className="text-[#77716B]">Redirecting to login...</p>
+    </section>
+  );
+}
 
   const displayName = name || user.name || "BookNook Reader";
   const displayImage = image || user.image || "";
