@@ -170,11 +170,13 @@ export default function MyBooksClient() {
                     key={book._id}
                     className="overflow-hidden rounded-2xl border border-[#E8DED2] bg-white shadow-sm"
                   >
-                    <img
-                      src={book.image}
-                      alt={book.title}
-                      className="h-full w-full object-contain object-center py-8 rounded-lg"
-                    />
+                    <div className="flex w-full items-center justify-center bg-white p-4 pb-0">
+                      <img
+                        src={book.image}
+                        alt={book.title}
+                        className="h-[400px] object-contain object-center"
+                      />
+                    </div>
 
                     <div className="p-6">
                       <span className="rounded-full bg-[#F5E9E4] px-3 py-1.5 text-xs font-semibold text-[#B85C45]">
