@@ -62,11 +62,11 @@ const NewArrivals = async () => {
               key={book._id}
               className="group overflow-hidden rounded-2xl border border-[#E8DED2] bg-white transition duration-300 hover:-translate-y-1 hover:shadow-lg"
             >
-              <div className="aspect-[5/4] overflow-hidden bg-[#F0EAE1]">
+              <div className="aspect-[5/4] overflow-hidden">
                 <img
                   src={book.image}
                   alt={book.title}
-                  className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
+                  className="h-full w-full object-contain py-8 rounded-lg object-center transition duration-500 group-hover:scale-105"
                 />
               </div>
 

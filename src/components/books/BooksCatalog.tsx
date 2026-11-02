@@ -120,11 +120,11 @@ export default function BooksCatalog({ books }: BooksCatalogProps) {
               key={book._id}
               className="overflow-hidden rounded-2xl border border-[#E8DED2] bg-white transition-all duration-300 hover:-translate-y-1 hover:shadow-lg"
             >
-              <div className="aspect-[5/4] overflow-hidden bg-[#F0EAE1]">
+              <div className="aspect-[5/4] overflow-hidden ">
                 <img
                   src={book.image}
                   alt={book.title}
-                  className="h-full w-full object-cover transition-transform duration-500 hover:scale-105"
+                  className="h-full w-full object-contain object-center py-8 rounded-lg transition-transform duration-500 hover:scale-105"
                 />
               </div>
 

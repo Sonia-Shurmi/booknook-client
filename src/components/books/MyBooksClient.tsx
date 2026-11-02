@@ -173,7 +173,7 @@ export default function MyBooksClient() {
                     <img
                       src={book.image}
                       alt={book.title}
-                      className="h-64 w-full object-cover"
+                      className="h-full w-full object-contain object-center py-8 rounded-lg"
                     />
 
                     <div className="p-6">
