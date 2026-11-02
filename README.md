@@ -5,6 +5,7 @@
 BookNook is a modern online library platform where readers can explore books, borrow available copies, manage their borrowed books, and return them easily. Users can also add and manage their own book collections.
 
 ## Live Website
+
 [Add your deployed website URL here]
 
 ## Features
@@ -79,6 +80,19 @@ npm run dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) in your browser.
+
+## Future Improvements
+
+BookNook can be expanded with additional features to make the reading and borrowing experience even better:
+
+- **Book Ratings and Reviews:** Allow readers to rate books and share their opinions.
+- **Personal Reading Lists:** Let users save books they want to read later.
+- **Smart Recommendations:** Suggest books based on users' interests and reading preferences.
+- **Borrowing Reminders:** Send notifications before book return deadlines.
+- **Reading History:** Maintain a record of previously borrowed and read books.
+- **Advanced Search:** Add more filtering and sorting options to help readers discover books.
+- **Admin Dashboard:** Provide collection statistics and tools for managing library activity.
+- **Dark Mode:** Introduce an alternative theme for a more comfortable browsing experience.
 
 ## Project Purpose
 
