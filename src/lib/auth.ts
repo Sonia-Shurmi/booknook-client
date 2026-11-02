@@ -24,5 +24,8 @@ export const auth = betterAuth({
 
   plugins: [jwt()],
 
-  trustedOrigins: ["http://localhost:3000"],
+  trustedOrigins: [
+    "http://localhost:3000",
+    "https://booknook-client-lemon.vercel.app",
+  ],
 });
