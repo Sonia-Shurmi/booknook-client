@@ -3,6 +3,8 @@
 
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
+import { useRouter } from "next/navigation";
+import { authClient } from "@/lib/auth-client";
 import { apiRequest } from "@/lib/api";
 import ReturnConfirmModal from "@/components/books/ReturnConfirmModal";
 
@@ -17,6 +19,9 @@ interface Borrow {
 }
 
 export default function MyBorrowsClient() {
+  const router = useRouter();
+  const { data: session, isPending } = authClient.useSession();
+  const user = session?.user;
   const [borrows, setBorrows] = useState<Borrow[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -24,23 +29,33 @@ export default function MyBorrowsClient() {
   const [returning, setReturning] = useState(false);
 
   useEffect(() => {
-    const fetchBorrows = async () => {
-      try {
-        const data = await apiRequest("/borrows");
-        setBorrows(data);
-      } catch (err) {
-        setError(
-          err instanceof Error
-            ? err.message
-            : "Unable to load your borrowed books."
-        );
-      } finally {
-        setLoading(false);
-      }
-    };
+  if (isPending || !user) {
+    return;
+  }
 
-    fetchBorrows();
-  }, []);
+  const fetchBorrows = async () => {
+    try {
+      const data = await apiRequest("/borrows");
+      setBorrows(data);
+    } catch (err) {
+      setError(
+        err instanceof Error
+          ? err.message
+          : "Unable to load your borrowed books."
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  fetchBorrows();
+}, [isPending, user]);
+
+useEffect(() => {
+  if (!isPending && !user) {
+    router.replace("/login?callbackUrl=%2Fmy-borrows");
+  }
+}, [isPending, user, router]);
 
   const formatDate = (date: string) => {
     return new Date(date).toLocaleDateString("en-GB", {

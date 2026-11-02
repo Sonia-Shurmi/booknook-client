@@ -10,6 +10,25 @@ import { toast } from "sonner";
 
 export default function LoginPage() {
   const router = useRouter();
+  const getSafeCallbackUrl = () => {
+    const callbackUrl = new URLSearchParams(
+      window.location.search
+    ).get("callbackUrl");
+
+    if (!callbackUrl) return "/";
+
+    try {
+      const url = new URL(callbackUrl, window.location.origin);
+
+      if (url.origin !== window.location.origin) {
+        return "/";
+      }
+
+      return `${url.pathname}${url.search}${url.hash}`;
+    } catch {
+      return "/";
+    }
+  };
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -34,7 +53,7 @@ export default function LoginPage() {
       }
 
       toast.success("Welcome back to BookNook!");
-      router.push("/");
+      router.push(getSafeCallbackUrl());
       router.refresh();
     } catch (error) {
       toast.error("Something went wrong. Please try again.");
@@ -49,7 +68,7 @@ export default function LoginPage() {
 
       const { error } = await authClient.signIn.social({
         provider: "google",
-        callbackURL: "/",
+        callbackURL: getSafeCallbackUrl(),
       });
 
       if (error) {

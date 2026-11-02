@@ -2,6 +2,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { authClient } from "@/lib/auth-client";
 import { apiRequest } from "@/lib/api";
 import BorrowModal from "@/components/books/BorrowModal";
 
@@ -20,29 +22,42 @@ interface Book {
 }
 
 export default function BookDetailsClient({ id }: { id: string }) {
+  const router = useRouter();
+  const { data: session, isPending } = authClient.useSession();
+  const user = session?.user;
   const [book, setBook] = useState<Book | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [showBorrowModal, setShowBorrowModal] = useState(false);
 
-  useEffect(() => {
-    const fetchBook = async () => {
-      try {
-        const data = await apiRequest(`/books/${id}`);
-        setBook(data);
-      } catch (err) {
-        setError(
-          err instanceof Error ? err.message : "Unable to load this book."
-        );
-      } finally {
-        setLoading(false);
-      }
-    };
+ useEffect(() => {
+  if (!isPending && !user) {
+    router.replace(
+      `/login?callbackUrl=${encodeURIComponent(`/books/${id}`)}`
+    );
+  }
+}, [isPending, user, router, id]);
 
-    fetchBook();
-  }, [id]);
+useEffect(() => {
+  if (isPending || !user) return;
 
-  if (loading) {
+  const fetchBook = async () => {
+    try {
+      const data = await apiRequest(`/books/${id}`);
+      setBook(data);
+    } catch (err) {
+      setError(
+        err instanceof Error ? err.message : "Unable to load this book."
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  fetchBook();
+}, [id, isPending, user]);
+
+  if (isPending || !user || loading) {
     return (
       <div className="flex min-h-[60vh] items-center justify-center">
         <p className="text-[#77716B]">Loading book details...</p>

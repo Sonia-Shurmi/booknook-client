@@ -2,6 +2,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { authClient } from "@/lib/auth-client";
@@ -28,6 +29,7 @@ export default function AddBookForm() {
     description: "",
     totalCopies: "1",
   });
+  const [imageFile, setImageFile] = useState<File | null>(null);
 
   const [submitting, setSubmitting] = useState(false);
 
@@ -51,44 +53,74 @@ export default function AddBookForm() {
     }));
   };
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  
+const uploadImage = async (file: File) => {
+  const formData = new FormData();
+  formData.append("image", file);
 
-    if (!user) {
-      toast.error("Please log in to add a book.");
-      router.push("/login");
-      return;
-    }
+  const response = await fetch("/api/upload-image", {
+    method: "POST",
+    body: formData,
+  });
 
-    if (Number(formData.totalCopies) < 1) {
-      toast.error("Please enter at least one copy.");
-      return;
-    }
+  const result = await response.json();
 
-    try {
-      setSubmitting(true);
+  if (!response.ok) {
+    throw new Error(result.message || "Image upload failed.");
+  }
 
-      await apiRequest("/books", {
-        method: "POST",
-        body: JSON.stringify({
-          ...formData,
-          totalCopies: Number(formData.totalCopies),
-        }),
-      });
+  return result.imageUrl as string;
+};
 
-      toast.success("Your book has been added successfully!");
-      router.push("/my-books");
-      router.refresh();
-    } catch (error) {
-      toast.error(
-        error instanceof Error
-          ? error.message
-          : "Unable to add this book."
-      );
-    } finally {
-      setSubmitting(false);
-    }
-  };
+
+ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  e.preventDefault();
+
+  if (!user) {
+    toast.error("Please log in to add a book.");
+    router.push("/login");
+    return;
+  }
+
+  if (!imageFile) {
+    toast.error("Please select a book cover image.");
+    return;
+  }
+
+  if (Number(formData.totalCopies) < 1) {
+    toast.error("Please enter at least one copy.");
+    return;
+  }
+
+  try {
+    setSubmitting(true);
+
+    // Upload the selected image to ImgBB
+    const imageUrl = await uploadImage(imageFile);
+
+    // Save book information with the uploaded image URL
+    await apiRequest("/books", {
+      method: "POST",
+      body: JSON.stringify({
+        ...formData,
+        image: imageUrl,
+        totalCopies: Number(formData.totalCopies),
+      }),
+    });
+
+    toast.success("Your book has been added successfully!");
+    router.push("/my-books");
+    router.refresh();
+  } catch (error) {
+    toast.error(
+      error instanceof Error
+        ? error.message
+        : "Unable to add this book."
+    );
+  } finally {
+    setSubmitting(false);
+  }
+};
 
   const inputClass =
     "h-12 w-full rounded-xl border border-[#E8DED2] bg-[#FAF7F2] px-4 text-sm text-[#292421] outline-none transition focus:border-[#B85C45] focus:ring-2 focus:ring-[#B85C45]/10";
@@ -192,22 +224,60 @@ export default function AddBookForm() {
             </div>
 
             <div>
-              <label className="mb-2 block text-sm font-semibold text-[#292421]">
-                Book Cover Image URL
-              </label>
-              <input
-                type="url"
-                name="image"
-                value={formData.image}
-                onChange={handleChange}
-                placeholder="https://example.com/book-cover.jpg"
-                required
-                className={inputClass}
-              />
-              <p className="mt-2 text-xs text-[#99918A]">
-                Paste a direct link to the book cover image.
-              </p>
-            </div>
+            <label className="mb-2 block text-sm font-semibold text-[#292421]">
+              Book Cover Image
+            </label>
+
+            <input
+              type="file"
+              name="image"
+              accept="image/*"
+              required
+              onChange={(e) => {
+                const file = e.target.files?.[0];
+
+                if (file) {
+                  const allowedTypes = [
+                    "image/jpeg",
+                    "image/png",
+                    "image/webp",
+                  ];
+
+                  if (!allowedTypes.includes(file.type)) {
+                    toast.error("Only JPG, PNG, and WEBP images are allowed.");
+                    e.target.value = "";
+                    setImageFile(null);
+                    return;
+                  }
+
+                  if (file.size > 5 * 1024 * 1024) {
+                    toast.error("Image size must not exceed 5 MB.");
+                    e.target.value = "";
+                    setImageFile(null);
+                    return;
+                  }
+
+                  setImageFile(file);
+                }
+
+              }}
+              className={inputClass}
+            />
+
+            <p className="mt-2 text-xs text-[#99918A]">
+              Choose a book cover image from your computer. It will be uploaded to ImgBB.
+            </p>
+
+            {imageFile && (
+              <div className="mt-4">
+                <img
+                  src={URL.createObjectURL(imageFile)}
+                  alt="Book cover preview"
+                  className="h-48 w-32 rounded-lg border border-[#E8E0D8] object-cover"
+                />
+              </div>
+            )}
+          </div>
 
             <div>
               <label className="mb-2 block text-sm font-semibold text-[#292421]">

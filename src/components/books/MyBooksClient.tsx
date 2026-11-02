@@ -136,7 +136,7 @@ export default function MyBooksClient() {
             </p>
           </div>
 
-          {isPending || loading ? (
+          {isPending || !userEmail || loading ? (
             <div className="py-20 text-center text-[#77716B]">
               Loading your books...
             </div>
