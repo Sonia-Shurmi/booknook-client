@@ -42,9 +42,8 @@ const slides = [
 
 const HeroSlider = () => {
   return (
-    <section className="mx-auto max-w-7xl px-5 pt-8 md:px-8 md:pt-12">
-      <div className="relative overflow-hidden rounded-3xl">
-
+    <section className="mx-auto w-full max-w-7xl overflow-hidden px-3 pt-5 sm:px-5 sm:pt-8 md:px-8 md:pt-10">
+      <div className="relative w-full min-w-0 overflow-hidden rounded-2xl sm:rounded-3xl">
         <Swiper
           modules={[Autoplay, Navigation, Pagination]}
           slidesPerView={1}
@@ -61,55 +60,55 @@ const HeroSlider = () => {
             clickable: true,
             el: ".hero-pagination",
           }}
-          className="group"
+          className="w-full min-w-0"
         >
           {slides.map((slide, index) => (
             <SwiperSlide key={slide.label}>
-              <div className="grid min-h-[520px] items-center gap-10 bg-[#F0EAE1] px-12 py-14 md:grid-cols-2 md:px-20 lg:min-h-[570px] lg:px-24">
+              <div className="grid w-full min-w-0 grid-cols-1 items-center gap-8 bg-[#F0EAE1] px-5 py-10 sm:gap-9 sm:px-10 sm:py-12 md:px-12 md:py-14 lg:min-h-[570px] lg:grid-cols-2 lg:gap-10 lg:px-20 lg:py-16 xl:px-24">
 
                 {/* Text Content */}
-                <div className="relative z-10 max-w-xl">
-                  <span className="mb-6 inline-flex rounded-full border border-[#B85C45]/30 bg-white/60 px-4 py-2 text-[11px] font-bold tracking-[0.2em] text-[#B85C45]">
+                <div className="w-full min-w-0 max-w-xl">
+                  <span className="mb-5 inline-flex max-w-full rounded-full border border-[#B85C45]/30 bg-white/60 px-3 py-2 text-[10px] font-bold tracking-[0.15em] text-[#B85C45] sm:mb-6 sm:px-4 sm:text-[11px] sm:tracking-[0.2em]">
                     {slide.label}
                   </span>
 
-                  <h1 className="font-[family-name:var(--font-lora)] text-4xl font-semibold leading-[1.2] tracking-tight text-[#292421] sm:text-5xl lg:text-6xl">
+                  <h1 className="break-words font-[family-name:var(--font-lora)] text-3xl font-semibold leading-[1.2] tracking-tight text-[#292421] sm:text-4xl md:text-5xl lg:text-5xl xl:text-6xl">
                     {slide.title}
                   </h1>
 
-                  <p className="mt-6 max-w-lg text-base leading-8 text-[#77716B] md:text-lg">
+                  <p className="mt-4 max-w-lg text-sm leading-7 text-[#77716B] sm:mt-5 sm:text-base sm:leading-8 lg:text-lg">
                     {slide.description}
                   </p>
 
-                  <div className="mt-9 flex flex-wrap items-center gap-4">
+                  <div className="mt-6 flex flex-col items-start gap-3 sm:mt-8 sm:flex-row sm:flex-wrap sm:items-center sm:gap-4">
                     <Link
                       href="/books"
-                      className="inline-flex items-center gap-2 rounded-full bg-[#B85C45] px-7 py-3.5 text-sm font-semibold text-white shadow-md transition-all hover:-translate-y-0.5 hover:bg-[#9F4B38] hover:shadow-lg"
+                      className="inline-flex items-center gap-2 rounded-full bg-[#B85C45] px-6 py-3 text-sm font-semibold text-white shadow-md transition-all hover:-translate-y-0.5 hover:bg-[#9F4B38] hover:shadow-lg"
                     >
                       Browse Books
                       <ArrowRight size={18} />
                     </Link>
 
-                    <span className="text-sm font-medium text-[#77716B]">
+                    <span className="text-xs font-medium text-[#77716B] sm:text-sm">
                       Discover your next favorite
                     </span>
                   </div>
                 </div>
 
                 {/* Image */}
-                <div className="relative mx-auto w-full max-w-md">
-                  <div className="absolute -inset-4 rotate-3 rounded-3xl bg-[#87917B]/20" />
+                <div className="relative mx-auto w-full min-w-0 max-w-lg">
+                  <div className="absolute -inset-2 rotate-2 rounded-2xl bg-[#87917B]/20 sm:-inset-3 sm:rounded-3xl sm:rotate-3" />
 
-                  <div className="relative aspect-[4/3] overflow-hidden rounded-2xl shadow-xl md:aspect-[5/4]">
+                  <div className="relative aspect-[16/10] w-full overflow-hidden rounded-xl shadow-xl sm:aspect-[4/3] sm:rounded-2xl lg:aspect-[5/4]">
                     <img
                       src={slide.image}
                       alt={slide.imageAlt}
-                      className="h-full w-full object-cover"
+                      className="block h-full w-full object-cover"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-[#292421]/20 to-transparent" />
                   </div>
 
-                  <div className="absolute -bottom-5 -left-5 hidden rounded-2xl bg-white px-5 py-4 shadow-lg sm:block">
+                  <div className="absolute -bottom-4 -left-3 hidden rounded-2xl bg-white px-5 py-4 shadow-lg sm:block lg:-bottom-5 lg:-left-5">
                     <p className="font-[family-name:var(--font-lora)] text-lg font-semibold text-[#292421]">
                       {index === 0
                         ? "Explore new worlds"
@@ -131,7 +130,7 @@ const HeroSlider = () => {
         <button
           type="button"
           aria-label="Previous slide"
-          className="hero-prev absolute left-2 top-1/2 z-20 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border border-[#E8DED2] bg-white/90 text-[#292421] shadow-md transition-all hover:bg-[#B85C45] hover:text-white md:left-5 md:h-12 md:w-12"
+          className="hero-prev absolute left-2 top-1/2 z-20 hidden h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border border-[#E8DED2] bg-white/90 text-[#292421] shadow-md transition-all hover:bg-[#B85C45] hover:text-white sm:flex md:left-4 md:h-12 md:w-12"
         >
           <ChevronLeft size={22} />
         </button>
@@ -140,14 +139,13 @@ const HeroSlider = () => {
         <button
           type="button"
           aria-label="Next slide"
-          className="hero-next absolute right-2 top-1/2 z-20 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border border-[#E8DED2] bg-white/90 text-[#292421] shadow-md transition-all hover:bg-[#B85C45] hover:text-white md:right-5 md:h-12 md:w-12"
+          className="hero-next absolute right-2 top-1/2 z-20 hidden h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border border-[#E8DED2] bg-white/90 text-[#292421] shadow-md transition-all hover:bg-[#B85C45] hover:text-white sm:flex md:right-4 md:h-12 md:w-12"
         >
           <ChevronRight size={22} />
         </button>
 
         {/* Pagination */}
-        <div className="hero-pagination absolute bottom-5 left-0 z-20 flex w-full items-center justify-center gap-2" />
-
+        <div className="hero-pagination absolute bottom-3 left-0 z-20 flex w-full items-center justify-center gap-2 sm:bottom-5" />
       </div>
     </section>
   );

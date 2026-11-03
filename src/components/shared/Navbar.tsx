@@ -64,7 +64,7 @@ const Navbar = () => {
         </Link>
 
         {/* Desktop Navigation */}
-        <div className="hidden items-center gap-8 md:flex">
+        <div className="hidden items-center gap-8 xl:flex">
           <Link href="/" className="text-sm font-medium text-[#292421] transition-colors hover:text-[#B85C45]">
             Home
           </Link>
@@ -91,7 +91,7 @@ const Navbar = () => {
         </div>
 
         {/* Authentication */}
-        <div className="hidden items-center gap-3 md:flex">
+        <div className="hidden items-center gap-3 xl:flex">
           {isPending ? (
             <div className="h-10 w-24 animate-pulse rounded-full bg-[#E8DED2]" />
           ) : user ? (
@@ -176,8 +176,9 @@ const Navbar = () => {
         {/* Mobile Menu Button */}
         <button
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          className="flex h-10 w-10 items-center justify-center rounded-lg text-[#292421] hover:bg-[#F0EAE1] md:hidden"
+          className="flex h-10 w-10 items-center justify-center rounded-lg text-[#292421] hover:bg-[#F0EAE1] xl:hidden"
           aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
+          aria-expanded={mobileMenuOpen}
         >
           {mobileMenuOpen ? <X size={23} /> : <Menu size={23} />}
         </button>
@@ -185,7 +186,7 @@ const Navbar = () => {
 
       {/* Mobile Navigation */}
       {mobileMenuOpen && (
-        <div className="border-t border-[#E8DED2] bg-[#FAF7F2] px-5 py-5 shadow-lg md:hidden">
+        <div className="border-t border-[#E8DED2] bg-[#FAF7F2] px-5 py-5 shadow-lg xl:hidden">
           <div className="flex flex-col gap-1">
             {[
               { label: "Home", href: "/" },
